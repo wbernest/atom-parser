@@ -14,8 +14,8 @@ import (
 )
 
 // ParseString will be used to parse strings and will return the Atom object
-func ParseString(s string) (*atom.Entry, error) {
-	feed := atom.Entry{}
+func ParseString(s string) (*atom.Feed, error) {
+	feed := atom.Feed{}
 	if len(s) == 0 {
 		return &feed, nil
 	}
@@ -30,7 +30,7 @@ func ParseString(s string) (*atom.Entry, error) {
 }
 
 // ParseURL will be used to parse a string returned from a url and will return the Rss object
-func ParseURL(url string) (*atom.Entry, string, error) {
+func ParseURL(url string) (*atom.Feed, string, error) {
 	byteValue, err := getContent(url)
 	if err != nil {
 		return nil, "", err
@@ -38,7 +38,7 @@ func ParseURL(url string) (*atom.Entry, string, error) {
 
 	decoder := xml.NewDecoder(strings.NewReader(string(byteValue)))
 	decoder.CharsetReader = charset.NewReaderLabel
-	feed := atom.Entry{}
+	feed := atom.Feed{}
 	err = decoder.Decode(&feed)
 	if err != nil {
 		return nil, "", err
@@ -68,7 +68,7 @@ func getContent(url string) ([]byte, error) {
 
 // CompareItems - This function will used to compare 2 atom feed xml item objects
 // and will return a list of differing items
-func CompareItems(feedOne *atom.Feed, feedTwo *atom.Feed) []*atom.Entry {
+func CompareItems(feedOne atom.Feed, feedTwo atom.Feed) []*atom.Entry {
 	biggerFeed := feedOne
 	smallerFeed := feedTwo
 	itemList := []*atom.Entry{}
@@ -82,7 +82,7 @@ func CompareItems(feedOne *atom.Feed, feedTwo *atom.Feed) []*atom.Entry {
 	for _, item1 := range biggerFeed.Entry {
 		exists := false
 		for _, item2 := range smallerFeed.Entry {
-			if item1.Updated == item2.Updated && item1.Title == item2.Title {
+			if item1.ID == item2.ID {
 				exists = true
 				break
 			}
@@ -97,13 +97,13 @@ func CompareItems(feedOne *atom.Feed, feedTwo *atom.Feed) []*atom.Entry {
 // CompareItemsBetweenOldAndNew - This function will used to compare 2 atom xml event objects
 // and will return a list of items that are specifically in the newer feed but not in
 // the older feed
-func CompareItemsBetweenOldAndNew(feedOld *atom.Feed, feedNew *atom.Feed) []*atom.Entry {
+func CompareItemsBetweenOldAndNew(feedOld atom.Feed, feedNew atom.Feed) []*atom.Entry {
 	itemList := []*atom.Entry{}
 
 	for _, item1 := range feedNew.Entry {
 		exists := false
 		for _, item2 := range feedOld.Entry {
-			if item1.Updated == item2.Updated && item1.Title == item2.Title {
+			if item1.ID == item2.ID {
 				exists = true
 				break
 			}
