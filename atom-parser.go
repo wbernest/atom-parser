@@ -114,3 +114,13 @@ func CompareItemsBetweenOldAndNew(feedOld atom.Feed, feedNew atom.Feed) []*atom.
 	}
 	return itemList
 }
+
+// IsValidFeed checks feed to see if it is an Atom feed
+func IsValidFeed(url string) bool {
+	_, err := getContent(url)
+	if err == nil {
+		return true
+	}
+
+	return false
+}
