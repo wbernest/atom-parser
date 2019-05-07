@@ -68,7 +68,7 @@ func getContent(url string) ([]byte, error) {
 
 // CompareItems - This function will used to compare 2 atom feed xml item objects
 // and will return a list of differing items
-func CompareItems(feedOne atom.Feed, feedTwo atom.Feed) []*atom.Entry {
+func CompareItems(feedOne *atom.Feed, feedTwo *atom.Feed) []*atom.Entry {
 	biggerFeed := feedOne
 	smallerFeed := feedTwo
 	itemList := []*atom.Entry{}
@@ -97,7 +97,7 @@ func CompareItems(feedOne atom.Feed, feedTwo atom.Feed) []*atom.Entry {
 // CompareItemsBetweenOldAndNew - This function will used to compare 2 atom xml event objects
 // and will return a list of items that are specifically in the newer feed but not in
 // the older feed
-func CompareItemsBetweenOldAndNew(feedOld atom.Feed, feedNew atom.Feed) []*atom.Entry {
+func CompareItemsBetweenOldAndNew(feedOld *atom.Feed, feedNew *atom.Feed) []*atom.Entry {
 	itemList := []*atom.Entry{}
 
 	for _, item1 := range feedNew.Entry {
