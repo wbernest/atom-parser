@@ -29,8 +29,8 @@ func ParseString(s string) (*atom.Entry, error) {
 	return &feed, nil
 }
 
-// RssParseURL will be used to parse a string returned from a url and will return the Rss object
-func RssParseURL(url string) (*atom.Entry, string, error) {
+// ParseURL will be used to parse a string returned from a url and will return the Rss object
+func ParseURL(url string) (*atom.Entry, string, error) {
 	byteValue, err := getContent(url)
 	if err != nil {
 		return nil, "", err
@@ -94,7 +94,7 @@ func CompareItems(feedOne *atom.Feed, feedTwo *atom.Feed) []*atom.Entry {
 	return itemList
 }
 
-// CompareItemsBetweenOldAndNew - This function will used to compare 2 RSS xml item objects
+// CompareItemsBetweenOldAndNew - This function will used to compare 2 atom xml event objects
 // and will return a list of items that are specifically in the newer feed but not in
 // the older feed
 func CompareItemsBetweenOldAndNew(feedOld *atom.Feed, feedNew *atom.Feed) []*atom.Entry {
